@@ -1,17 +1,15 @@
-var λ = require('fantasy-check/src/adapters/nodeunit'),
-    applicative = require('fantasy-check/src/laws/applicative'),
-    functor = require('fantasy-check/src/laws/functor'),
-    monad = require('fantasy-check/src/laws/monad'),
+'use strict';
 
-    helpers = require('fantasy-helpers'),
-    combinators = require('fantasy-combinators'),
+const λ = require('fantasy-check/src/adapters/nodeunit');
+const applicative = require('fantasy-check/src/laws/applicative');
+const functor = require('fantasy-check/src/laws/functor');
+const monad = require('fantasy-check/src/laws/monad');
 
-    Identity = require('fantasy-identities'),
-    Tuple2 = require('fantasy-tuples').Tuple2,
-    Writer = require('../fantasy-writers'),
-    
-    constant = combinators.constant,
-    identity = combinators.identity;
+const {constant, identity} = require('fantasy-combinators');
+const {Tuple2} = require('fantasy-tuples');
+
+const Identity = require('fantasy-identities');
+const Writer = require('../fantasy-writers');
 
 function run(a) {
     return Identity.of(a.run()._1);
@@ -39,24 +37,20 @@ exports.writer = {
 
     // Manual tests
     'when testing the of': λ.check(
-        function(a) {
+        (a) => {
             return Writer.of(a).run()._1 === a;
         },
         [λ.AnyVal]
     ),
     'when testing the of for the second value': λ.check(
-        function(a) {
+        (a) => {
             return Writer.of(a).run()._2.concat([]).length === 0;
         },
         [λ.AnyVal]
     ),
     'when testing the chain, returns correct value': λ.check(
-        function(a, b) {
-            return Writer.of(a).chain(
-                function(x) {
-                    return Writer.of(x + b);
-                }
-            ).run()._1 === a + b;
+        (a, b) => {
+            return Writer.of(a).chain((x) => Writer.of(x + b)).run()._1 === a + b;
         },
         [λ.AnyVal, λ.AnyVal]
     )

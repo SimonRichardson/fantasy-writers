@@ -32,10 +32,7 @@
     "fantasy-identities": "git+https://github.com/fantasyland/fantasy-identities.git"
   },
   "scripts": {
-    "test": "$(npm bin)/nodeunit test.js"
-  },
-  "scripts": {
-      "test": "grunt"
+      "test": "node --harmony_destructuring node_modules/grunt-contrib-nodeunit/node_modules/.bin/nodeunit test/*.js"
   },
   "files": ["fantasy-writers.js", "src/*.js"],
   "main": "fantasy-writers.js",
